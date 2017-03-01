@@ -31,3 +31,11 @@ else
     printf "Updating brew...\n"
     brew update && brew outdated && brew upgrade && brew cleanup
 fi
+
+find ~ -name ".oh-my-zsh" -maxdepth 1 | egrep '.*' &>/dev/null
+if [[ $? != 0 ]]; then
+    printf "Installing oh-my-zsh...\n"
+else
+    printf "\noh-my-zsh is installed at:\n"
+    printf "\t${GREEN}\`%s\`${NORMAL}\n\n" "$(find ~ -name ".oh-my-zsh" -maxdepth 1)"
+fi
