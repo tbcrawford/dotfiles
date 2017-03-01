@@ -32,10 +32,14 @@ else
     brew update && brew outdated && brew upgrade && brew cleanup
 fi
 
+
+# Check if oh-my-zsh is installed
 find ~ -name ".oh-my-zsh" -maxdepth 1 | egrep '.*' &>/dev/null
 if [[ $? != 0 ]]; then
     printf "Installing oh-my-zsh...\n"
+    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 else
     printf "\noh-my-zsh is installed at:\n"
     printf "\t${GREEN}\`%s\`${NORMAL}\n\n" "$(find ~ -name ".oh-my-zsh" -maxdepth 1)"
+    bash $ZSH/tools/upgrade.sh
 fi
