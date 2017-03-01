@@ -5,8 +5,10 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
     exit 1
 fi
 
-if xcode-select -p 2>&1; then
+if xcode-select -p 2>&1 &>/dev/null; then
     printf "%s\n" $(xcode-select -p)
+    printf "Command line tools are installed properly.\n"
 else
-    printf "Not installed?"
+    printf "Please install command line tools and rerun the script."
+    xcode-select --install
 fi
