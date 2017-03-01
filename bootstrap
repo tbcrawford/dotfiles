@@ -1,14 +1,33 @@
 #!/usr/bin/env bash
 
+GREEN=$(tput setaf 2)
+NORMAL=$(tput sgr0)
+
+# Check if on macOS or not
 if [[ "$OSTYPE" != "darwin"* ]]; then
     printf "This is for macOS only"
     exit 1
 fi
 
-if xcode-select -p 2>&1 &>/dev/null; then
-    printf "%s\n" $(xcode-select -p)
-    printf "Command line tools are installed properly.\n"
+
+# Check if command line tools are installed
+if xcode-select -p &>/dev/null 2>&1; then
+    printf "Command Line Tools are installed at:\n"
+    printf "\t${GREEN}\`%s\`${NORMAL}\n\n" "$(xcode-select -p)"
 else
-    printf "Please install command line tools and rerun the script."
-    xcode-select --install
+    printf "Please install command line tools and rerun the script.\n"
+    xcode-select --install &>/dev/null
+fi
+
+
+# Check if Homebrew is installed
+which -s brew
+if [[ $? != 0 ]]; then
+    printf "Installing Homebrew...\n"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else
+    printf "Homebrew is installed at.\n"
+    printf "\t${GREEN}\`%s\`${NORMAL}\n\n" "$(which brew)"
+    printf "Updating brew...\n"
+    brew update && brew outdated && brew upgrade && brew cleanup
 fi
